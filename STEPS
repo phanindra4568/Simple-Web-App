@@ -1,0 +1,144 @@
+Cloud:
+
+AWS Account (Free Tier)
+
+EC2 Ubuntu instance
+
+Step-by-Step Deployment Guide (AWS + Ubuntu EC2
+
+1️⃣ Create Your Simple Web App
+
+Create a file index.html in your project folder:
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Cloud App</title>
+</head>
+<body>
+  <h1>Hello AWS Cloud!</h1>
+  <p>This is my first web app hosted on an EC2 Ubuntu instance.</p>
+</body>
+</html>
+
+2️⃣ Launch an EC2 Instance
+
+Go to AWS Management Console → EC2.
+
+Click Launch Instance.
+
+Name: my-web-app
+
+AMI: Choose Ubuntu Server 22.04 LTS.
+
+Instance type: t2.micro (Free Tier)
+
+Key pair: Create or select one (download .pem file).
+
+Security group:
+
+Allow HTTP (port 80) and SSH (port 22).
+
+Click Launch Instance.
+
+3️⃣ Connect to Your EC2 Instance
+
+In your terminal (on your local machine):
+
+chmod 400 your-key.pem
+ssh -i your-key.pem ubuntu@<EC2_PUBLIC_IP>
+
+4️⃣ Install a Web Server (Apache or Nginx)
+
+Let’s use Apache for simplicity:
+
+sudo apt update
+sudo apt install apache2 -y
+
+
+Start and enable Apache:
+
+sudo systemctl start apache2
+sudo systemctl enable apache2
+
+
+Check the status:
+
+sudo systemctl status apache2
+
+5️⃣ Deploy Your Web App
+
+Upload your index.html file to the Apache web root:
+
+sudo rm /var/www/html/index.html
+sudo nano /var/www/html/index.html
+
+
+Paste your HTML content here, then save (Ctrl + O, Enter, Ctrl + X).
+
+Alternatively, you can copy files via SCP:
+
+scp -i your-key.pem index.html ubuntu@<EC2_PUBLIC_IP>:/tmp
+sudo mv /tmp/index.html /var/www/html/
+
+6️⃣ Test Your App
+
+Open your browser and visit:
+
+http://<EC2_PUBLIC_IP>/
+
+
+You should see your page live 🎉
+
+7️⃣ (Optional) Use a Custom Domain
+
+If you own a domain (e.g., from Freenom or Namecheap):
+
+Go to your domain DNS settings.
+
+Create an A Record pointing to your EC2 Public IP.
+
+After propagation, your domain will show your app.
+
+8️⃣ Take Required Screenshots
+
+✅ Deliverables:
+
+Screenshot of:
+
+Web app running in browser (showing public URL).
+
+AWS EC2 console showing your instance running.
+
+Source code (ZIP or GitHub repo link).
+
+Short deployment note.
+
+🧾 Example Deployment Note
+
+Title: AWS EC2 Web App Deployment (Ubuntu + Apache)
+
+Steps Summary:
+
+Created index.html for my simple web app.
+
+Launched AWS EC2 Ubuntu instance (t2.micro).
+
+Installed Apache web server.
+
+Uploaded and served HTML file at /var/www/html/.
+
+App accessible publicly at http://<EC2_PUBLIC_IP>/.
+
+Result:
+Website successfully hosted on AWS using an Ubuntu EC2 instance.
+
+🧹 9️⃣ Clean Up Resources
+
+When done, to avoid charges:
+
+sudo systemctl stop apache2
+exit
+
+
+Then terminate the instance in AWS Console.
